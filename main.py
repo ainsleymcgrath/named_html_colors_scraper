@@ -9,23 +9,16 @@ response = requests.get(COLOR_CODES_URL)
 soup = BeautifulSoup(response.text, "html.parser")
 
 
-def get_name_from_color_row(row):
-    return row.select_one("td.color-name h4").text.lower()
+def list_from_color_table(color_table):
+    output_list = []
+    for row in color_table:
+        output_list.append(row.select_one("td.color-name h4").text)
 
-
-def get_attr_from_color_row(attr, row):
-    return row.select_one("td.color-swatch div").get(attr)
+    return output_list
 
 
 color_info_dict = {
-    section.get("id"): {
-        get_name_from_color_row(color_row): {
-            "hex": get_attr_from_color_row("data-hex", color_row),
-            "rgb": get_attr_from_color_row("data-rgb", color_row),
-            "hsl": get_attr_from_color_row("data-hsl", color_row),
-        }
-        for color_row in section.select("table tr.color")
-    }
+    section.get("id"): list_from_color_table(section.select("table tr.color"))
     for section in soup.select("article#names section")
     if section.select("table tr.color")
 }
