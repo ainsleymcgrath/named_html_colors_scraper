@@ -20,4 +20,4 @@ python-language-server==0.22.0
 requests==2.22.0
 toml==0.10.0
 urllib3==1.25.3
-Werkzeug==0.14.1
+Werkzeug==0.15.3
